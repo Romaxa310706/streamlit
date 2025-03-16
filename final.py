@@ -77,25 +77,25 @@ if file:
         # Таблица со стандартным и средним отклонением
         stats_table = df_period[["temperature"]].agg(["mean", "std"]).reset_index()
         stats_table.columns = ["Показатель", "Значение"]
-        st.subheader("Статистические показатели температуры")
+        st.subheader("Отклонения")
         st.dataframe(stats_table)
 
         # Гистограмма температур
-        st.subheader("Распределение температур")
-        fig_hist = px.histogram(df, x="temperature", nbins=30, title="Гистограмма температур",
+        st.subheader("Распределение температуры")
+        fig_hist = px.histogram(df, x="temperature", nbins=30, title="Гистограмма",
                                 labels={"temperature": "Температура (°C)"}, marginal="rug")
         st.plotly_chart(fig_hist)
 
         # Boxplot для сезонных температур
-        st.subheader("Ящик с усами (Boxplot) для сезонных температур")
+        st.subheader("Boxplot для сезонных температур")
         fig_box = px.box(df, x="season", y="temperature", title="Температура по сезонам",
                          labels={"season": "Сезон", "temperature": "Температура (°C)"}, color="season")
         st.plotly_chart(fig_box)
 
         # Scatter plot: Температура vs Время
-        st.subheader("Температура во времени")
+        st.subheader("Температура (иное представление)")
         fig_scatter = px.scatter(df, x="timestamp", y="temperature", color="season",
-                                 title="Температура во времени", labels={"temperature": "Температура (°C)"})
+                                 title="Температура с другого ракурса", labels={"temperature": "Температура (°C)"})
         st.plotly_chart(fig_scatter)
 
         api_key = st.text_input("Введите API-ключ OpenWeatherMap")
@@ -115,3 +115,10 @@ if file:
                     st.success(f"Температура в пределах нормы для текущего сезона ({current_season}).")
                 else:
                     st.warning(f"Температура {current_temp}°C отклоняется от нормальных значений для сезона {current_season}.")
+
+# "Завершить работу" (По факту ничего не делает,
+# так как можно тупо дальше выбирать город и дату
+# или ввести ключ API, но пусть будет -- прикольно)
+if st.button('Завершить работу'):
+    st.write("Приложение завершено.")
+    st.stop()
